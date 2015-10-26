@@ -131,17 +131,16 @@ declare namespace __React {
     // ----------------------------------------------------------------------
 
     // Base component for plain JS classes
-    class Component<P, S> implements ComponentLifecycle<P, S> {
+    abstract class Component<P, S> implements ComponentLifecycle<P, S> {
         static propTypes: ValidationMap<any>;
         static contextTypes: ValidationMap<any>;
         static childContextTypes: ValidationMap<any>;
-        static defaultProps: Props<any>;
-
+        static defaultProps: any;
         constructor(props?: P, context?: any);
         setState(f: (prevState: S, props: P) => S, callback?: () => any): void;
         setState(state: S, callback?: () => any): void;
         forceUpdate(callBack?: () => any): void;
-        render(): JSX.Element;
+        abstract render(): JSX.Element;
         props: P;
         state: S;
         context: {};
@@ -547,6 +546,7 @@ declare namespace __React {
     interface SVGAttributes extends DOMAttributes {
         ref?: string | ((component: SVGComponent) => void);
 
+        id?: string;
         cx?: number | string;
         cy?: number | string;
         d?: string;
@@ -564,6 +564,7 @@ declare namespace __React {
         markerEnd?: string;
         markerMid?: string;
         markerStart?: string;
+        mask?: string;
         offset?: number | string;
         opacity?: number | string;
         patternContentUnits?: string;
@@ -593,6 +594,7 @@ declare namespace __React {
         y1?: number | string;
         y2?: number | string
         y?: number | string;
+        style?: CSSProperties;
     }
 
     //
