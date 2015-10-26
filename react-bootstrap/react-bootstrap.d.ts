@@ -5,7 +5,7 @@
 
 ///<reference path="../react/react.d.ts"/>
     
-declare module "react-bootstrap" {
+declare module "bootstrap" {
     // Import React 
     import React = require("react");
 
