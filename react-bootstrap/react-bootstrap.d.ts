@@ -779,7 +779,7 @@ declare module "react-bootstrap" {
 
     // <Input />
     // ----------------------------------------
-    interface InputProps {
+    interface InputProps extends React.Props<Input> {
         addonAfter?: any; // TODO: Add more specific type
         addonBefore?: any; // TODO: Add more specific type
         bsSize?: string;
@@ -797,7 +797,6 @@ declare module "react-bootstrap" {
         labelClassName?: string;
         multiple?: boolean;
         placeholder?: string;
-        ref?: string;
         readOnly?: boolean;
         type?: string;
         onChange?: Function; // TODO: Add more specific type 
@@ -807,7 +806,7 @@ declare module "react-bootstrap" {
         value?: any; // TODO: Add more specific type
         wrapperClassName?: string; 
     }
-    interface Input extends React.ReactElement<InputProps> { }
+    interface Input extends React.ReactElement<InputProps> { getValue(): string }
     interface InputClass extends React.ComponentClass<InputProps> { }
     var Input: InputClass;
 
