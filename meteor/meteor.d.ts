@@ -7,13 +7,11 @@
  * These are the common (for client and server) modules and interfaces that can't be automatically generated from the Meteor data.js file
  */
 
-interface EJSONable {
-	[key: string]: number | string | boolean | Object | number[] | string[] | Object[] | Date | Uint8Array | EJSON.CustomType;
-}
-interface JSONable {
-	[key: string]: number | string | boolean | Object | number[] | string[] | Object[];
-}
-interface EJSON extends EJSONable {}
+interface ESJONableStruct { [key: string]: EJSONable, [key: number]: EJSONable }
+interface JSONableStruct { [key: string]: JSONable, [key: number]: JSONable }
+
+declare type EJSONable = number | string | boolean | Date | Uint8Array | EJSON.CustomType | ESJONableStruct;
+declare type JSONable = number | string | boolean | JSONableStruct;
 
 declare module Match {
 	var Any: any;
@@ -27,6 +25,7 @@ declare module Match {
 	function ObjectIncluding(dico: any):boolean;
 	function OneOf(...patterns: any[]): any;
 	function Where(condition: any): any;
+	type Pattern = {new(...args: any[]): any};
 }
 
 declare module Meteor {
@@ -123,7 +122,7 @@ declare module Random {
 	function secret(numberOfChars?: number): string;
 	function fraction():number;
 	function hexString(numberOfDigits:number):string; // @param numberOfDigits, @returns a random hex string of the given length
-	function choice(array:any[]):string; // @param array, @return a random element in array
+	function choice<T>(array:T[]):T; // @param array, @return a random element in array
 	function choice(str:string):string; // @param str, @return a random char in str
 }
 
@@ -416,7 +415,7 @@ declare module App {
 }
 
 declare module Assets {
-	function getBinary(assetPath: string, asyncCallback?: Function): EJSON;
+	function getBinary(assetPath: string, asyncCallback?: Function): EJSONable;
 	function getText(assetPath: string, asyncCallback?: Function): string;
 }
 
@@ -493,33 +492,35 @@ declare module EJSON {
 		new(): CustomType;
 	}
 	interface CustomType {
-		clone(): EJSON.CustomType;
-		equals(other: Object): boolean;
+		clone?(): EJSON.CustomType;
+		equals?(other: Object): boolean;
 		toJSONValue(): JSONable;
 		typeName(): string;
 	}
 
-	function addType(name: string, factory: (val: JSONable) => EJSON.CustomType): void;
+	function addType(name: string, factory: (val: JSONable) => EJSONable): void;
 	function clone<T>(val:T): T;
-	function equals(a: EJSON, b: EJSON, options?: {
+	function equals(a: EJSONable, b: EJSONable, options?: {
 		keyOrderSensitive?: boolean;
 	}): boolean;
 	function fromJSONValue(val: JSONable): any;
 	function isBinary(x: Object): boolean;
 	var newBinary: any;
-	function parse(str: string): EJSON;
-	function stringify(val: EJSON, options?: {
+	function parse(str: string): EJSONable;
+	function stringify(val: EJSONable, options?: {
 		indent?: boolean | number | string;
 		canonical?: boolean;
 	}): string;
-	function toJSONValue(val: EJSON): JSONable;
+	function toJSONValue(val: EJSONable): JSON;
 }
 
 declare module Match {
-	function test(value: any, pattern: any): boolean;
+	function test(value: any, pattern: Pattern): boolean;
 }
 
 declare module Meteor {
+	function _get(o: {}, ...path: string[]): any
+
 	var Error: ErrorStatic;
 	interface ErrorStatic {
 		new(error: string, reason?: string, details?: string): Error;
@@ -583,21 +584,7 @@ declare module Mongo {
 			transform?: Function;
 		}): Collection<T>;
 	}
-	interface Collection<T> {
-		allow(options: {
-			insert?: (userId: string, doc: T) => boolean;
-			update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
-			remove?: (userId: string, doc: T) => boolean;
-			fetch?: string[];
-			transform?: Function;
-		}): boolean;
-		deny(options: {
-			insert?: (userId: string, doc: T) => boolean;
-			update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
-			remove?: (userId: string, doc: T) => boolean;
-			fetch?: string[];
-			transform?: Function;
-		}): boolean;
+	interface Queryable<T> {
 		find(selector?: Mongo.Selector | Mongo.ObjectID | string, options?: {
 			sort?: Mongo.SortSpecifier;
 			skip?: number;
@@ -612,11 +599,25 @@ declare module Mongo {
 			fields?: Mongo.FieldSpecifier;
 			reactive?: boolean;
 			transform?: Function;
-		}): T;
-		insert(doc: T, callback?: Function): string;
-		rawCollection(): any;
-		rawDatabase(): any;
-		remove(selector: Mongo.Selector | Mongo.ObjectID | string, callback?: Function): void;
+		}): T | void;
+	}
+	interface Collection<T> extends Queryable<T> {
+		allow(options: {
+			insert?: (userId: string, doc: T) => boolean;
+			update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
+			remove?: (userId: string, doc: T) => boolean;
+			fetch?: string[];
+			transform?: Function;
+		}): boolean;
+		deny(options: {
+			insert?: (userId: string, doc: T) => boolean;
+			update?: (userId: string, doc: T, fieldNames: string[], modifier: any) => boolean;
+			remove?: (userId: string, doc: T) => boolean;
+			fetch?: string[];
+			transform?: Function;
+		}): boolean;
+		insert(doc: Object, callback?: Function): string;
+		remove(selector: Mongo.Selector, callback?: Function): void;
 		update(selector: Mongo.Selector | Mongo.ObjectID | string, modifier: Mongo.Modifier, options?: {
 			multi?: boolean;
 			upsert?: boolean;
@@ -625,6 +626,11 @@ declare module Mongo {
 			multi?: boolean;
 		}, callback?: Function): {numberAffected?: number; insertedId?: string;};
 		_ensureIndex(indexName: string, options?: {[key: string]: any}): void;
+		_name: string;
+		insert(doc: T, callback?: Function): string;
+		rawCollection(): any;
+		rawDatabase(): any;
+		remove(selector: Mongo.Selector | Mongo.ObjectID | string, callback?: Function): void;
 	}
 
 	var Cursor: CursorStatic;
@@ -837,7 +843,7 @@ interface TemplateStatic {
 	currentData(): {};
 	instance(): Blaze.TemplateInstance;
 	parentData(numLevels?: number): {};
-	registerHelper(name: string, helperFunction: Function): void;
+	registerHelper(name: string, helperFunction: any): void;
 }
 interface Template {
 	created: Function;
@@ -850,7 +856,7 @@ interface Template {
 	rendered: Function;
 }
 
-declare function check(value: any, pattern: any): void;
+declare function check(value: any, pattern: Match.Pattern): void;
 declare function execFileAsync(command: string, args?: any[], options?: {
 	cwd?: Object;
 	env?: Object;
@@ -866,3 +872,5 @@ declare function execFileSync(command: string, args?: any[], options?: {
 	waitForClose?: string;
 }): String;
 declare function getExtension(): String;
+declare function MethodInvocation(options: {
+}): any; /** TODO: add return value **/
