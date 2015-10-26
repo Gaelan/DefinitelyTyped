@@ -2213,6 +2213,9 @@ declare module _ {
         * @param arrays Arrays to process.
         * @return A new array of grouped elements.
         **/
+
+        zip<A, B>(arrayA: A[], arrayB: B[]): [A, B][];
+
         zip(...arrays: any[][]): any[][];
 
         /**
@@ -3733,7 +3736,7 @@ declare module _ {
         **/
         findLast<T>(
             collection: Dictionary<T>,
-            pluckValue: string): T;
+            pluckValue: string): T | void;
     }
 
     interface LoDashArrayWrapper<T> {
@@ -7487,9 +7490,9 @@ declare module _ {
     /**********
      * Object *
      **********/
-
     //_.assign
     interface LoDashStatic {
+
         /**
         * Assigns own enumerable properties of source object(s) to the destination object. Subsequent
         * sources will overwrite property assignments of previous sources. If a callback is provided
@@ -7501,135 +7504,95 @@ declare module _ {
         * @param thisArg The this binding of callback.
         * @return The destination object.
         **/
-        assign<P, T, S1, Value, Result>(
+        assign<T, S1, Value>(
             object: T,
             s1: S1,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
+            thisArg?: any): T & S1;
 
         /**
         * @see _.assign
         **/
-        assign<P, T, S1, S2, Value, Result>(
-            object: T,
-            s1: S1,
-            s2: S2,
-            callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
-
-        /**
-        * @see _.assign
-        **/
-        assign<P, T, S1, S2, S3, Value, Result>(
-            object: T,
-            s1: S1,
-            s2: S2,
-            s3: S3,
-            callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
-
-        /**
-        * @see _.assign
-        **/
-        assign<P, T, S1, S2, S3, S4, Value, Result>(
-            object: T,
-            s1: S1,
-            s2: S2,
-            s3: S3,
-            s4: S4,
-            callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
-
-        /**
-        * @see _.assign
-        **/
-        extend<P, T, S1, Value, Result>(
-            object: T,
-            s1: S1,
-            callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
-
-        /**
-        * @see _.assign
-        **/
-        extend<P, T, S1, S2, Value, Result>(
+        assign<T, S1, S2, Value>(
             object: T,
             s1: S1,
             s2: S2,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
+            thisArg?: any): T & S1 & S2;
 
         /**
         * @see _.assign
         **/
-        extend<P, T, S1, S2, S3, Value, Result>(
+        assign<T, S1, S2, S3, Value>(
             object: T,
             s1: S1,
             s2: S2,
             s3: S3,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
+            thisArg?: any): T & S1 & S2 & S3;
 
         /**
         * @see _.assign
         **/
-        extend<P, T, S1, S2, S3, S4, Value, Result>(
+        assign<T, S1, S2, S3, S4, Value>(
             object: T,
             s1: S1,
             s2: S2,
             s3: S3,
             s4: S4,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): Result;
+            thisArg?: any): T & S1 & S2 & S3 & S4;
+
+        extend: typeof _.assign;
     }
 
     interface LoDashObjectWrapper<T> {
         /**
         * @see _.assign
         **/
-        assign<S1, Value, TResult>(
+        assign<S1, Value>(
             s1: S1,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1;
 
         /**
         * @see _.assign
         **/
-        assign<S1, S2, Value, TResult>(
+        assign<S1, S2, Value>(
             s1: S1,
             s2: S2,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2;
         /**
         * @see _.assign
         **/
-        assign<S1, S2, S3, Value, TResult>(
+        assign<S1, S2, S3, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2 & S3;
         /**
         * @see _.assign
         **/
-        assign<S1, S2, S3, S4, Value, TResult>(
+        assign<S1, S2, S3, S4, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             s4: S4,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2 & S3 & S4;
         /**
         * @see _.assign
         **/
-        assign<S1, S2, S3, S4, S5, Value, TResult>(
+        assign<S1, S2, S3, S4, S5, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             s4: S4,
             s5: S5,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2 & S3 & S4 & S5;
 
         /**
         * @see _.assign
@@ -7637,46 +7600,46 @@ declare module _ {
         extend<S1, Value, TResult>(
             s1: S1,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1;
 
         /**
         * @see _.assign
         **/
-        extend<S1, S2, Value, TResult>(
+        extend<S1, S2, Value>(
             s1: S1,
             s2: S2,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2;
         /**
         * @see _.assign
         **/
-        extend<S1, S2, S3, Value, TResult>(
+        extend<S1, S2, S3, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S3 & S3;
         /**
         * @see _.assign
         **/
-        extend<S1, S2, S3, S4, Value, TResult>(
+        extend<S1, S2, S3, S4, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             s4: S4,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2 & S3 & S4;
         /**
         * @see _.assign
         **/
-        extend<S1, S2, S3, S4, S5, Value, TResult>(
+        extend<S1, S2, S3, S4, S5, Value>(
             s1: S1,
             s2: S2,
             s3: S3,
             s4: S4,
             s5: S5,
             callback?: (objectValue: Value, sourceValue: Value) => Value,
-            thisArg?: any): TResult;
+            thisArg?: any): T & S1 & S2 & S3 & S4 & S5;
 
     }
 
