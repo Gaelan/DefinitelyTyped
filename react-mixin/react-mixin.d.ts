@@ -22,6 +22,6 @@ declare module "react-mixin" {
 
     var reactMixin: reactMixin.ReactMixin;
 
-    export = reactMixin;
+    export default reactMixin;
 }
 
