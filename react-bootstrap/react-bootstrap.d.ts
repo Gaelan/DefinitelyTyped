@@ -238,6 +238,7 @@ declare module "react-bootstrap" {
     interface ModalProps { 
         // Required
         onHide: Function;
+        show: boolean;
 
         // Optional
         animation?: boolean;
