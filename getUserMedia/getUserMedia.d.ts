@@ -1,11 +1,11 @@
 interface Navigator {
   mediaDevices: MediaDevices;
 }
-
+/*
 interface MediaStream {
   id: string;
   // @todo other properties
-}
+}*/
 interface MediaDevices {
   getUserMedia(
     options: MediaStreamConstraints
@@ -13,7 +13,7 @@ interface MediaDevices {
 }
 
 // @todo Add support for constraints.
-interface MediaStreamConstraints {video?: boolean, audio?: boolean}
+/*interface MediaStreamConstraints {video?: boolean, audio?: boolean}*/
 
 interface AudioContext {
   createMediaStreamSource(stream: MediaStream): AudioNode;
