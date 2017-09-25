@@ -38,14 +38,14 @@ declare module Mongo {
             limit?: number;
             fields?: FieldSpecifier;
             reactive?: boolean;
-            transform?: Function;
+            transform?: Function | null;
         }): Cursor<T>;
         findOne(selector?: Selector | ObjectID | string, options?: {
             sort?: SortSpecifier;
             skip?: number;
             fields?: FieldSpecifier;
             reactive?: boolean;
-            transform?: Function;
+            transform?: Function | null;
         }): T;
         insert(doc: T, callback?: Function): string;
         rawCollection(): any;

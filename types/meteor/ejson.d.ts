@@ -1,7 +1,7 @@
 interface EJSONableCustomType {
-    clone(): EJSONableCustomType;
-    equals(other: Object): boolean;
-    toJSONValue(): JSONable;
+    clone?(): EJSONableCustomType;
+    equals?(other: Object): boolean;
+    toJSONValue(): JSONable | number | string | boolean | Object | number[] | string[] | Object[] | undefined | null;
     typeName(): string;
 }
 interface EJSONable {

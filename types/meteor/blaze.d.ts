@@ -1,3 +1,4 @@
+/// <reference path="tracker.d.ts" />
 
 declare module Blaze {
     var View: ViewStatic;
@@ -31,7 +32,7 @@ declare module Blaze {
     }
 
     interface EventsMap {
-        [key: string]: Function;
+        [id: string]: Meteor.EventHandlerFunction;
     }
 
     var Template: TemplateStatic;
@@ -39,7 +40,7 @@ declare module Blaze {
     interface TemplateStatic {
         new (viewName?: string, renderFunction?: Function): Template;
 
-        registerHelper(name: string, func: Function): void;
+        registerHelper(name: string, func: any): void;
         instance(): TemplateInstance;
         currentData(): any;
         parentData(numLevels: number): any;
@@ -53,7 +54,7 @@ declare module Blaze {
         find(selector: string): HTMLElement;
         findAll(selector: string): HTMLElement[];
         $: any;
-        onCreated(cb: Function): void;
+        onCreated(cb: ((this: Template) => void)): void;
         onRendered(cb: Function): void;
         onDestroyed(cb: Function): void;
         created: Function;
@@ -61,6 +62,7 @@ declare module Blaze {
         destroyed: Function;
         helpers(helpersMap: HelpersMap): void;
         events(eventsMap: EventsMap): void;
+        subscribe: typeof Meteor.subscribe;
     }
 
     var TemplateInstance: TemplateInstanceStatic;
@@ -139,8 +141,12 @@ declare module "meteor/blaze" {
             [key: string]: Function;
         }
 
+        interface EventHandlerFunction extends Function {
+            (event?:Meteor.Event, templateInstance?: Blaze.TemplateInstance):void;
+        }
+
         interface EventsMap {
-            [key: string]: Function;
+            [id:string]:Meteor.EventHandlerFunction;
         }
 
         var Template: TemplateStatic;

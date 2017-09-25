@@ -1,3 +1,7 @@
+/// <reference path="ddp.d.ts" />
+/// <reference path="blaze.d.ts" />
+/// <reference path="ejson.d.ts" />
+
 declare module Meteor {
     /** Global props **/
     var isClient: boolean;
@@ -53,7 +57,7 @@ declare module Meteor {
 
     function call(name: string, ...args: any[]): any;
 
-    function apply(name: string, args: EJSONable[], options?: {
+    function apply(name: string, args: (EJSONable | number | string | boolean | Object | number[] | string[] | Object[] | Date | Uint8Array | EJSONableCustomType | undefined | null )[], options?: {
         wait?: boolean;
         onResultReceived?: Function;
         returnStubValue?: boolean;
@@ -266,7 +270,7 @@ declare module Meteor {
     interface EventHandlerFunction extends Function {
         (event?: Meteor.Event, templateInstance?: Blaze.TemplateInstance): void;
     }
-    interface EventMap {
+    interface EventsMap {
         [id: string]: Meteor.EventHandlerFunction;
     }
     /** Event **/
@@ -383,7 +387,7 @@ declare module Meteor {
     function onConnection(callback: Function): void;
     /** Connection **/
 
-    function publish(name: string, func: Function): void;
+    function publish(name: string, func: (this: Subscription, ...args: any[]) => Mongo.Cursor<{}> | Mongo.Cursor<{}>[] | void): void;
 
     function _debug(...args: any[]): void;
 }

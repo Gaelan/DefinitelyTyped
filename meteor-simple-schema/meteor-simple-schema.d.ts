@@ -15,6 +15,15 @@ interface AutoformSpec {
     type: string;
 }
 
+interface SSAutoValueContext {
+    isSet: boolean
+    unset(): void
+    value: any
+    operator: string
+    field(name: string): {isset: boolean, value: any, operator: string}
+    siblingField(name: string): {isset: boolean, value: any, operator: string}
+}
+
 interface SimpleSchemaField {
     type?: SimpleSchemaType | [SimpleSchemaType];
     label?: string | (() => string);
@@ -32,7 +41,7 @@ interface SimpleSchemaField {
     trim?: boolean;
     custom?: () => string;
     defaultValue?: any;
-    autoValue?: () => any;
+    autoValue?: (this: SSAutoValueContext) => any;
     autoform?: AutoformSpec;
 }
 

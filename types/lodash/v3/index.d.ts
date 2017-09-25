@@ -12700,12 +12700,12 @@ declare module _ {
         /**
          * @see assign
          */
-        extend<TObject extends {}, TSource extends {}, TResult extends {}>(
+        extend<TObject extends {}, TSource extends {}>(
             object: TObject,
             source: TSource,
             customizer?: AssignCustomizer,
             thisArg?: any
-        ): TResult;
+        ): TObject & TSource;
 
         /**
          * @see assign

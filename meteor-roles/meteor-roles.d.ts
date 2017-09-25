@@ -6,7 +6,7 @@
 //
 // Note: For all definitions below, "users" and "roles" params can be strings or arrays
 
-/// <reference path="../meteor/meteor.d.ts"/>
+/// <reference path="../types/meteor/mongo.d.ts"/>
 
 interface RolesDAO {
   _id?: string;

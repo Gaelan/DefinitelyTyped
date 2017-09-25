@@ -1,4 +1,4 @@
-/// <reference path='../meteor/meteor' />
+/// <reference path='../types/meteor/meteor.d.ts' />
 declare namespace Meteor {
 	interface PublishCompositeOptions<L1, L2, L3, L4, L5> {
 		find: () => Mongo.Cursor<L1>,
@@ -26,6 +26,6 @@ declare namespace Meteor {
 	}
 	function publishComposite<L1, L2, L3, L4, L5>(
 		name: string,
-		options: PublishCompositeOptions<L1, L2, L3, L4, L5> | ((...args: any[]) => PublishCompositeOptions<L1, L2, L3, L4, L5>)
+		options: PublishCompositeOptions<L1, L2, L3, L4, L5> | ((this: Subscription, ...args: any[]) => PublishCompositeOptions<L1, L2, L3, L4, L5>)
 	): void;
 }

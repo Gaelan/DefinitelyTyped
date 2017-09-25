@@ -11,7 +11,7 @@ declare class RouteController<Params> {
 
 interface RouteOptions {
   path: string,
-  controller: typeof RouteController
+  controller: {new(): RouteController<{}>}
 }
 
 declare namespace Router {

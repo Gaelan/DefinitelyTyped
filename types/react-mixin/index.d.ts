@@ -4,12 +4,9 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
 
-/// <reference types="react" />
+/// <reference path="../react/v15/index.d.ts" />
 
-
-import * as React from 'react';
-
-declare namespace reactMixin {
+declare module 'react-mixin' {
     export interface ClassDecorator {
         <TFunction extends Function>(target: TFunction): TFunction | void;
     }
@@ -19,8 +16,8 @@ declare namespace reactMixin {
         onClass<S>(clazz: any, mixin: React.Mixin<any, any>): React.ComponentClass<S>;
         <S>(clazz: any, mixin: React.Mixin<any, any>): React.ComponentClass<S>;
     }
+
+    var reactMixin: ReactMixin;
+
+	export default reactMixin;
 }
-
-declare var reactMixin: reactMixin.ReactMixin;
-
-export = reactMixin;

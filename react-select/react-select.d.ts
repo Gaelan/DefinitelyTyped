@@ -19,17 +19,17 @@ interface ReactSelectProps {
   filterOption?: (option: ReactSelectOption, filter: string) => boolean, // method to filter a single option
   filterOptions?: (option: ReactSelectOption[], filter: string, selectedValues: string[]) => ReactSelectOption[], // method to filter the options array
   ignoreCase?: boolean, // whether to perform case-insensitive filtering
-  inputProps?: React.DOMAttributes, // custom attributes for the Input (in the Select-control) e.g?: {'data-foo'?: 'bar'}
+  inputProps?: React.DOMAttributes<{}> , // custom attributes for the Input (in the Select-control) e.g?: {'data-foo'?: 'bar'}
   matchPos?: string, // (any|start) match the start or entire string when filtering
   matchProp?: string, // (any|label|value) which option property to filter on
   multi?: boolean, // multi-value input
   name?: string, // field name, for hidden <input /> tag
   newOptionCreator?: void, // factory to create new options when allowCreate set
   noResultsText?: string, // placeholder displayed when there are no matching search results
-  onBlur?: (event: React.SyntheticEvent) => void, // onBlur handler?: function(event) {}
+  onBlur?: (event: React.SyntheticEvent<{}>) => void, // onBlur handler?: function(event) {}
   onChange?: (value: string, selectedValues: ReactSelectOption[]) => void, // onChange handler?: function(newValue) {}
-  onFocus?: (event: React.SyntheticEvent) => void, // onFocus handler?: function(event) {}
-  onOptionLabelClick?: (value: string, event: React.SyntheticEvent) => void, // onCLick handler for value labels?: function (value, event) {}
+  onFocus?: (event: React.SyntheticEvent<{}>) => void, // onFocus handler?: function(event) {}
+  onOptionLabelClick?: (value: string, event: React.SyntheticEvent<{}>) => void, // onCLick handler for value labels?: function (value, event) {}
   // optionComponent?: React.ComponentClass<, // option component to render in dropdown
   // optionRenderer?: func, // optionRenderer?: function(option) {}
   options?: ReactSelectOption[], // array of options

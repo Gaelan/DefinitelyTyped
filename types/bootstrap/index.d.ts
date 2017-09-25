@@ -5,7 +5,7 @@
 // TypeScript Version: 2.3
 
 
-/// <reference types="jquery"/>
+/// <reference path="../jquery/index.d.ts"/>
 
 interface ModalOptions {
     backdrop?: boolean|string;
