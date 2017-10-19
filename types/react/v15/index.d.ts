@@ -431,6 +431,7 @@ declare namespace React {
 
     // tslint:disable-next-line:no-empty-interface
     interface FormEvent<T> extends SyntheticEvent<T> {
+        target: EventTarget & T;
     }
 
     interface InvalidEvent<T> extends SyntheticEvent<T> {
