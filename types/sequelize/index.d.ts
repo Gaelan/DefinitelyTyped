@@ -3202,21 +3202,21 @@ declare namespace sequelize {
     }
 
     /**
-         * Shortcut for types used in FindOptions.attributes
-         */
+     * Shortcut for types used in FindOptions.attributes
+     */
     type FindOptionsAttributesArray = Array<string | literal | [string, string] | fn | [fn, string] | cast | [cast, string] | [literal, string]>;
 
     /**
-* Options that are passed to any model creating a SELECT query
-*
-* A hash of options to describe the scope of the search
-*/
+     * Options that are passed to any model creating a SELECT query
+     *
+     * A hash of options to describe the scope of the search
+     */
     interface FindOptions<T> extends LoggingOptions, SearchPathOptions {
 
         /**
          * A hash of attributes to describe your search. See above for examples.
          */
-        where?: WhereOptions<T> | fn | Array<col | and | or | string>;
+        where?: WhereOptions<T> | where | fn | Array<col | and | or | string>;
 
         /**
          * A list of the attributes that you want to select. To rename an attribute, you can pass an array, with
@@ -5273,6 +5273,88 @@ declare namespace sequelize {
     }
 
     /**
+     * Operator symbols to be used when querying data
+     */
+    interface Operators {
+        eq: symbol;
+        ne: symbol;
+        gte: symbol;
+        gt: symbol;
+        lte: symbol;
+        lt: symbol;
+        not: symbol;
+        is: symbol;
+        in: symbol;
+        notIn: symbol;
+        like: symbol;
+        notLike: symbol;
+        iLike: symbol;
+        notILike: symbol;
+        regexp: symbol;
+        notRegexp: symbol;
+        iRegexp: symbol;
+        notIRegexp: symbol;
+        between: symbol;
+        notBetween: symbol;
+        overlap: symbol;
+        contains: symbol;
+        contained: symbol;
+        adjacent: symbol;
+        strictLeft: symbol;
+        strictRight: symbol;
+        noExtendRight: symbol;
+        noExtendLeft: symbol;
+        and: symbol;
+        or: symbol;
+        any: symbol;
+        all: symbol;
+        values: symbol;
+        col: symbol;
+        placeholder: symbol;
+        join: symbol;
+        raw: symbol;  //deprecated remove by v5.0
+    }
+
+    type OperatorsAliases = Partial<{
+        [key: string]: symbol;
+        $eq: symbol;
+        $ne: symbol;
+        $gte: symbol;
+        $gt: symbol;
+        $lte: symbol;
+        $lt: symbol;
+        $not: symbol;
+        $in: symbol;
+        $notIn: symbol;
+        $is: symbol;
+        $like: symbol;
+        $notLike: symbol;
+        $iLike: symbol;
+        $notILike: symbol;
+        $regexp: symbol;
+        $notRegexp: symbol;
+        $iRegexp: symbol;
+        $notIRegexp: symbol;
+        $between: symbol;
+        $notBetween: symbol;
+        $overlap: symbol;
+        $contains: symbol;
+        $contained: symbol;
+        $adjacent: symbol;
+        $strictLeft: symbol;
+        $strictRight: symbol;
+        $noExtendRight: symbol;
+        $noExtendLeft: symbol;
+        $and: symbol;
+        $or: symbol;
+        $any: symbol;
+        $all: symbol;
+        $values: symbol;
+        $col: symbol;
+        $raw: symbol;  //deprecated remove by v5.0
+    }>
+
+    /**
      * Options for the constructor of Sequelize main class
      */
     interface Options {
@@ -5447,6 +5529,12 @@ declare namespace sequelize {
          * Defaults to false
          */
         benchmark?: boolean;
+
+        /**
+         * String based operator alias, default value is true which will enable all operators alias.
+         * Pass object to limit set of aliased operators or false to disable completely.
+         */
+        operatorsAliases?: boolean | OperatorsAliases;
     }
 
     /**
@@ -5499,6 +5587,8 @@ declare namespace sequelize {
          * A reference to the sequelize instance class.
          */
         Instance: Instance<any>;
+
+        Op: Operators;
 
         /**
          * Creates a object representing a database function. This can be used in search queries, both in where and

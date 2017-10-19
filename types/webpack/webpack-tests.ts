@@ -77,6 +77,26 @@ configuration = {
 };
 
 //
+// https://webpack.js.org/configuration/entry-context/#dynamic-entry
+//
+
+configuration = {
+    entry: () => './demo'
+};
+
+configuration = {
+    entry: () => ['./demo', './demo2']
+};
+
+configuration = {
+    entry: () => new Promise((resolve) => resolve('./demo'))
+};
+
+configuration = {
+    entry: () => new Promise((resolve) => resolve(['./demo', './demo2']))
+};
+
+//
 // https://webpack.github.io/docs/code-splitting.html
 //
 
@@ -323,6 +343,15 @@ plugin = new webpack.optimize.OccurrenceOrderPlugin(preferEntry);
 plugin = new webpack.optimize.OccurrenceOrderPlugin(preferEntry);
 plugin = new webpack.optimize.UglifyJsPlugin(options);
 plugin = new webpack.optimize.UglifyJsPlugin();
+plugin = new webpack.optimize.UglifyJsPlugin({
+    parallel: true
+});
+plugin = new webpack.optimize.UglifyJsPlugin({
+    parallel: {
+        cache: true,
+        workers: 2
+    }
+});
 plugin = new webpack.optimize.UglifyJsPlugin({
     compress: {
         warnings: false
@@ -602,7 +631,7 @@ configuration = {
     performance,
 };
 
-function loader(this: webpack.loader.LoaderContext, source: string, sourcemap: string): void {
+function loader(this: webpack.loader.LoaderContext, source: string | Buffer, sourcemap: string | Buffer): void {
     this.cacheable();
 
     this.async();
